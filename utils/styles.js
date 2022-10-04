@@ -15,7 +15,6 @@ const useStyles = makeStyles({
     fontFamily: 'Comfortaa, cursive',
     fontWeight: 'bold',
     fontSize: '2rem',
-    color: '#cb42f5',
   },
   main: {
     minHeight: '80vh',
