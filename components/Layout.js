@@ -1,107 +1,81 @@
 import {
   AppBar,
   Container,
-  createTheme,
-  CssBaseline,
   Link,
-  NoSsr,
   Switch,
-  ThemeProvider,
   Toolbar,
   Typography,
-} from '@material-ui/core';
-import Cookies from 'js-cookie';
-import Head from 'next/head';
-import NextLink from 'next/link';
-import React, { useContext } from 'react';
-import { Store } from '../utils/Store';
-import useStyles from '../utils/styles';
+} from "@mui/material";
+import Head from "next/head";
+import NextLink from "next/link";
+import React, { useContext, useEffect } from "react";
+import { Store } from "../utils/Store";
+import { classes } from "../utils/styles";
 
 export default function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
-  const { darkMode } = state;
-  const theme = createTheme({
-    typography: {
-      h1: {
-        fontSize: '1.6rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-      h2: {
-        fontSize: '1.4rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-      body1: {
-        fontWeight: 'normal',
-      },
-    },
-    palette: {
-      type: darkMode ? 'dark' : 'light',
-      primary: {
-        // main: '#2e0aad',
-        main: '#d709e6',
-      },
-      secondary: {
-        main: '#41e8e8',
-      },
-      // type: 'dark',
-      // primary: {
-      //   main: '#bff257',
-      // },
-      // secondary: {
-      //   main: '#abd6ce',
-      // },
-    },
-  });
+  const { currentTheme } = state;
 
-  const classes = useStyles();
+  useEffect(() => {
+    const data = window.localStorage.getItem("currentTheme");
+    if (data != null)
+      dispatch({
+        type:
+          JSON.parse(data) === "dark"
+            ? "CURRENT_THEME_DARK"
+            : "CURRENT_THEME_LIGHT",
+      });
+  }, []);
 
   const darkModeChangeHandler = () => {
-    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
-    const newDarkMode = !darkMode;
-    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
+    const newCurrentTheme = currentTheme === "light" ? "dark" : "light";
+    dispatch({
+      type:
+        newCurrentTheme === "dark"
+          ? "CURRENT_THEME_DARK"
+          : "CURRENT_THEME_LIGHT",
+    });
+    window.localStorage.setItem(
+      "currentTheme",
+      JSON.stringify(newCurrentTheme)
+    );
   };
 
   return (
     <div>
       <Head>
-        <title>{title ? `${title} - Shoppo` : 'Shoppo'}</title>
+        <title>{title ? `${title} - Shoppo` : "Shoppo"}</title>
         {description && <meta name="description" content={description}></meta>}
       </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppBar position="static" className={classes.navbar}>
-          <Toolbar>
-            <NextLink href="/" passHref>
-              <Link underline="none">
-                <Typography className={classes.brand} color="primary">
-                  shoppo
-                </Typography>
-              </Link>
+      <AppBar position="static" sx={classes.navbar}>
+        <Toolbar>
+          <NextLink href="/" passHref>
+            <Link underline="none">
+              <Typography sx={classes.brand} color="primary">
+                shoppo
+              </Typography>
+            </Link>
+          </NextLink>
+          <div style={classes.grow}></div>
+          <div>
+            <Switch
+              checked={currentTheme === "dark" ? true : false}
+              onChange={darkModeChangeHandler}
+            ></Switch>
+
+            <NextLink href="/cart" passHref>
+              <Link>Cart</Link>
             </NextLink>
-            <div className={classes.grow}></div>
-            <div>
-              <NoSsr>
-                <Switch
-                  checked={darkMode}
-                  onChange={darkModeChangeHandler}
-                ></Switch>
-              </NoSsr>
-              <NextLink href="/cart" passHref>
-                <Link>Cart</Link>
-              </NextLink>
-              <NextLink href="/login" passHref>
-                <Link>Login</Link>
-              </NextLink>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <Container className={classes.main}>{children}</Container>
-        <footer className={classes.footer}>
-          <Typography>All rights reserved. Next Shoppo.</Typography>
-        </footer>
-      </ThemeProvider>
+            <NextLink href="/login" passHref>
+              <Link>Login</Link>
+            </NextLink>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <Container sx={classes.main}>{children}</Container>
+      <footer style={classes.footer}>
+        <Typography>All rights reserved. Next Shoppo.</Typography>
+      </footer>
     </div>
   );
 }

@@ -1,17 +1,17 @@
-import Cookies from 'js-cookie';
 import { createContext, useReducer } from 'react';
 
 export const Store = createContext();
+
 const initialState = {
-  darkMode: Cookies.get('darkMode') === 'ON' ? true : false,
+  currentTheme: 'light',
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'DARK_MODE_ON':
-      return { ...state, darkMode: true };
-    case 'DARK_MODE_OFF':
-      return { ...state, darkMode: false };
+    case 'CURRENT_THEME_LIGHT':
+      return { ...state, currentTheme: 'light' };
+    case 'CURRENT_THEME_DARK':
+      return { ...state, currentTheme: 'dark' };
     default:
       return state;
   }

@@ -7,10 +7,10 @@ import {
   CardMedia,
   Grid,
   Typography,
-} from '@material-ui/core';
-import NextLink from 'next/link';
-import Layout from '../components/Layout';
-import data from '../utils/data';
+} from "@mui/material";
+import NextLink from "next/link";
+import Layout from "../components/Layout";
+import data from "../utils/data";
 
 export default function Home() {
   return (

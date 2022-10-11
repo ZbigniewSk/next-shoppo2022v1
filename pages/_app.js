@@ -1,17 +1,13 @@
-import { useEffect } from 'react';
-import '../styles/globals.css';
-import { StoreProvider } from '../utils/Store';
+import PageProvider from "../src/helpers/PageProvider";
+import { StoreProvider } from "../utils/Store";
 
-function MyApp({ Component, pageProps }) {
-  useEffect(() => {
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-  }, []);
+function MyApp(props) {
+  const { Component, pageProps, emotionCache } = props;
   return (
     <StoreProvider>
-      <Component {...pageProps} />
+      <PageProvider emotionCache={emotionCache}>
+        <Component {...pageProps} />
+      </PageProvider>
     </StoreProvider>
   );
 }
