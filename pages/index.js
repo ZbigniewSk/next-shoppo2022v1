@@ -12,9 +12,9 @@ import NextLink from "next/link";
 import Layout from "../components/Layout";
 import data from "../utils/data";
 
-export default function Home() {
+export default function Home({ setThemeHandler, currentTheme }) {
   return (
-    <Layout>
+    <Layout setThemeHandler={setThemeHandler} currentTheme={currentTheme}>
       <div>
         <h1>Products</h1>
         <Grid container spacing={3}>

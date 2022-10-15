@@ -6,25 +6,28 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { setCookie } from "cookies-next";
 import Head from "next/head";
 import NextLink from "next/link";
 import React, { useContext, useEffect } from "react";
 import { Store } from "../utils/Store";
 import { classes } from "../utils/styles";
 
-export default function Layout({ title, description, children }) {
-  const { state, dispatch } = useContext(Store);
-  const { currentTheme } = state;
+export default function Layout({
+  title,
+  description,
+  children,
+  setThemeHandler,
+  currentTheme,
+}) {
+  const { dispatch } = useContext(Store);
 
   useEffect(() => {
-    const data = window.localStorage.getItem("currentTheme");
-    if (data != null)
-      dispatch({
-        type:
-          JSON.parse(data) === "dark"
-            ? "CURRENT_THEME_DARK"
-            : "CURRENT_THEME_LIGHT",
-      });
+    dispatch({
+      type:
+        currentTheme === "dark" ? "CURRENT_THEME_DARK" : "CURRENT_THEME_LIGHT",
+    });
+    setCookie("darkMode", JSON.stringify(currentTheme));
   }, []);
 
   const darkModeChangeHandler = () => {
@@ -35,10 +38,8 @@ export default function Layout({ title, description, children }) {
           ? "CURRENT_THEME_DARK"
           : "CURRENT_THEME_LIGHT",
     });
-    window.localStorage.setItem(
-      "currentTheme",
-      JSON.stringify(newCurrentTheme)
-    );
+    setCookie("darkMode", JSON.stringify(newCurrentTheme));
+    setThemeHandler(newCurrentTheme);
   };
 
   return (
@@ -61,8 +62,8 @@ export default function Layout({ title, description, children }) {
             <Switch
               checked={currentTheme === "dark" ? true : false}
               onChange={darkModeChangeHandler}
+              color="secondary"
             ></Switch>
-
             <NextLink href="/cart" passHref>
               <Link>Cart</Link>
             </NextLink>

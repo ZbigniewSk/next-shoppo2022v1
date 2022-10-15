@@ -15,7 +15,7 @@ import Layout from "../../components/Layout";
 import data from "../../utils/data";
 import { classes } from "../../utils/styles";
 
-export default function ProductScreen() {
+export default function ProductScreen({ setThemeHandler, currentTheme }) {
   // const classes = useStyles();
   const router = useRouter();
   const { slug } = router.query;
@@ -24,7 +24,12 @@ export default function ProductScreen() {
     return <div>Product Not Found</div>;
   }
   return (
-    <Layout title={product.name} description={product.description}>
+    <Layout
+      title={product.name}
+      description={product.description}
+      currentTheme={currentTheme}
+      setThemeHandler={setThemeHandler}
+    >
       <div style={classes.section}>
         <NextLink href="/" passHref>
           <Link>

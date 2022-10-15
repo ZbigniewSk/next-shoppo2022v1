@@ -1,17 +1,18 @@
-import { createContext, useReducer } from 'react';
+// import { getCookie } from "cookies-next";
+import { createContext, useReducer } from "react";
 
 export const Store = createContext();
 
 const initialState = {
-  currentTheme: 'light',
+  currentTheme: "light",
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'CURRENT_THEME_LIGHT':
-      return { ...state, currentTheme: 'light' };
-    case 'CURRENT_THEME_DARK':
-      return { ...state, currentTheme: 'dark' };
+    case "CURRENT_THEME_LIGHT":
+      return { ...state, currentTheme: "light" };
+    case "CURRENT_THEME_DARK":
+      return { ...state, currentTheme: "dark" };
     default:
       return state;
   }
