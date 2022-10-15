@@ -28,7 +28,7 @@ export default function Layout({
         currentTheme === "dark" ? "CURRENT_THEME_DARK" : "CURRENT_THEME_LIGHT",
     });
     setCookie("darkMode", JSON.stringify(currentTheme));
-  }, []);
+  }, [currentTheme, dispatch]);
 
   const darkModeChangeHandler = () => {
     const newCurrentTheme = currentTheme === "light" ? "dark" : "light";
