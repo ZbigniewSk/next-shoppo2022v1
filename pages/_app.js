@@ -23,7 +23,7 @@ function App(props) {
 App.getInitialProps = async ({ ctx }) => {
   return {
     initialTheme: getCookie("darkMode", ctx)
-      ? JSON.parse(getCookie("darkMode", ctx))
+      ? await JSON.parse(getCookie("darkMode", ctx))
       : "light",
   };
 };
