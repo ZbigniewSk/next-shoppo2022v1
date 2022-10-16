@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Badge,
   Container,
   Link,
   Switch,
@@ -20,7 +21,8 @@ export default function Layout({
   setThemeHandler,
   currentTheme,
 }) {
-  const { dispatch } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
 
   useEffect(() => {
     dispatch({
@@ -29,6 +31,13 @@ export default function Layout({
     });
     setCookie("darkMode", JSON.stringify(currentTheme));
   }, [currentTheme, dispatch]);
+
+  useEffect(() => {
+    const data = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    dispatch({ type: "CART_INITIAL_ITEMS", payload: data });
+  }, [dispatch]);
 
   const darkModeChangeHandler = () => {
     const newCurrentTheme = currentTheme === "light" ? "dark" : "light";
@@ -65,7 +74,15 @@ export default function Layout({
               color="secondary"
             ></Switch>
             <NextLink href="/cart" passHref>
-              <Link>Cart</Link>
+              <Link>
+                {cart.cartItems.length > 0 ? (
+                  <Badge badgeContent={cart.cartItems.length} color="secondary">
+                    Cart
+                  </Badge>
+                ) : (
+                  "Cart"
+                )}
+              </Link>
             </NextLink>
             <NextLink href="/login" passHref>
               <Link>Login</Link>
