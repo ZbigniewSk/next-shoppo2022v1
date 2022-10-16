@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import Image from "next/image";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import Layout from "../../components/Layout";
 import Product from "../../models/Product";
@@ -24,6 +25,7 @@ export default function ProductScreen(props) {
   // const { slug } = router.query;
   // const product = data.products.find((a) => a.slug === slug);
   const { dispatch } = useContext(Store);
+  const router = useRouter();
   if (!product) {
     return <div>Product Not Found</div>;
   }
@@ -35,6 +37,7 @@ export default function ProductScreen(props) {
       return;
     }
     dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity: 1 } });
+    router.push("/cart");
   };
 
   return (
