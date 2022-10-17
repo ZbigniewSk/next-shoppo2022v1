@@ -16,6 +16,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import Image from "next/image";
 import NextLink from "next/link";
 import React, { useContext } from "react";
@@ -24,9 +25,21 @@ import { Store } from "../utils/Store";
 
 export default function CartScreen(props) {
   const { setThemeHandler, currentTheme } = props;
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const { cartItems } = cart;
+  const updateCartHandler = async (item, quantity) => {
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock <= 0) {
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity } });
+  };
+  const removeItemHandler = (item) => {
+    dispatch({ type: "CART_REMOVE_ITEM", payload: item });
+  };
+
   return (
     <Layout
       title="Shopping Cart"
@@ -38,7 +51,10 @@ export default function CartScreen(props) {
       </Typography>
       {cartItems.length === 0 ? (
         <div>
-          Cart is empty. <NextLink href="/">Go shopping</NextLink>
+          Cart is empty.{" "}
+          <NextLink href="/" passHref>
+            <Link>Go shopping</Link>
+          </NextLink>
         </div>
       ) : (
         <Grid container spacing={1}>
@@ -78,7 +94,13 @@ export default function CartScreen(props) {
                       </TableCell>
                       <TableCell align="right">
                         <FormControl size="small">
-                          <Select value={item.quantity} color="secondary">
+                          <Select
+                            value={item.quantity}
+                            color="secondary"
+                            onChange={(e) =>
+                              updateCartHandler(item, e.target.value)
+                            }
+                          >
                             {[...Array(item.countInStock).keys()].map((x) => (
                               <MenuItem key={x + 1} value={x + 1}>
                                 {x + 1}
@@ -89,7 +111,11 @@ export default function CartScreen(props) {
                       </TableCell>
                       <TableCell align="right">${item.price}</TableCell>
                       <TableCell align="right">
-                        <Button variant="outlined" color="secondary">
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => removeItemHandler(item)}
+                        >
                           x
                         </Button>
                       </TableCell>
@@ -122,3 +148,5 @@ export default function CartScreen(props) {
     </Layout>
   );
 }
+
+// export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });
