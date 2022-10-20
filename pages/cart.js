@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import Image from "next/image";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import Layout from "../components/Layout";
 import { Store } from "../utils/Store";
@@ -28,6 +29,7 @@ export default function CartScreen(props) {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const { cartItems } = cart;
+  const router = useRouter();
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock <= 0) {
@@ -38,6 +40,9 @@ export default function CartScreen(props) {
   };
   const removeItemHandler = (item) => {
     dispatch({ type: "CART_REMOVE_ITEM", payload: item });
+  };
+  const checkoutHandler = () => {
+    router.push("/shipping");
   };
 
   return (
@@ -136,7 +141,12 @@ export default function CartScreen(props) {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  <Button color="primary" fullWidth variant="outlined">
+                  <Button
+                    color="primary"
+                    fullWidth
+                    variant="outlined"
+                    onClick={checkoutHandler}
+                  >
                     Check Out
                   </Button>
                 </ListItem>

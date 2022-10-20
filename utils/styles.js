@@ -92,4 +92,8 @@ export const classes = {
     marginTop: "10px",
     marginBottom: "10px",
   },
+  form: {
+    maxWidth: "800px",
+    margin: "0 auto",
+  },
 };
