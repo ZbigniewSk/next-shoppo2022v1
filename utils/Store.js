@@ -8,6 +8,7 @@ const initialState = {
   cart: {
     cartItems: [],
   },
+  userInfo: null,
 };
 
 function reducer(state, action) {
@@ -40,6 +41,10 @@ function reducer(state, action) {
       const cartItems = action.payload;
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    case "USER_LOGIN":
+      return { ...state, userInfo: action.payload };
+    case "USER_LOGOUT":
+      return { ...state, userInfo: null, cart: { cartItems: [] } };
     default:
       return state;
   }

@@ -8,14 +8,34 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import NextLink from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import { Store } from "../utils/Store";
 import { classes } from "../utils/styles";
 
 export default function Login(props) {
   const { currentTheme, setThemeHandler } = props;
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const { state, dispatch } = useContext(Store);
+  const { userInfo } = state;
+  const router = useRouter();
+  const { redirect } = router.query;
+
+  useEffect(() => {
+    if (userInfo) {
+      router.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    const data = localStorage.getItem("userInfo")
+      ? JSON.parse(localStorage.getItem("userInfo"))
+      : null;
+    dispatch({ type: "USER_LOGIN", payload: data });
+  }, [dispatch]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -23,11 +43,14 @@ export default function Login(props) {
         email,
         password,
       });
-      alert("success login");
+      dispatch({ type: "USER_LOGIN", payload: data });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      router.push(redirect || "/");
     } catch (err) {
       alert(err.response.data ? err.response.data.message : err.message);
     }
   };
+
   return (
     <Layout
       title="Login"

@@ -96,4 +96,8 @@ export const classes = {
     maxWidth: "800px",
     margin: "0 auto",
   },
+  navbarButton: {
+    color: "#ffffff",
+    textTransform: "initial",
+  },
 };
