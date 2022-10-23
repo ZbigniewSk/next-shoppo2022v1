@@ -1,4 +1,5 @@
 import { getCookie } from "cookies-next";
+import { SnackbarProvider } from "notistack";
 import { useState } from "react";
 import PageProvider from "../src/helpers/PageProvider";
 import { StoreProvider } from "../utils/Store";
@@ -8,15 +9,17 @@ function App(props) {
   const [currentTheme, setCurrentTheme] = useState(initialTheme);
   const setThemeHandler = (v) => setCurrentTheme(v);
   return (
-    <StoreProvider>
-      <PageProvider currentTheme={currentTheme}>
-        <Component
-          {...pageProps}
-          setThemeHandler={setThemeHandler}
-          currentTheme={currentTheme}
-        />
-      </PageProvider>
-    </StoreProvider>
+    <SnackbarProvider anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+      <StoreProvider>
+        <PageProvider currentTheme={currentTheme}>
+          <Component
+            {...pageProps}
+            setThemeHandler={setThemeHandler}
+            currentTheme={currentTheme}
+          />
+        </PageProvider>
+      </StoreProvider>
+    </SnackbarProvider>
   );
 }
 
