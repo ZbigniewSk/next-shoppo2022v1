@@ -6,20 +6,35 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import NextLink from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { classes } from "../utils/styles";
 
 export default function Login(props) {
   const { currentTheme, setThemeHandler } = props;
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post("/api/users/login", {
+        email,
+        password,
+      });
+      alert("success login");
+    } catch (err) {
+      alert(err.response.data ? err.response.data.message : err.message);
+    }
+  };
   return (
     <Layout
       title="Login"
       currentTheme={currentTheme}
       setThemeHandler={setThemeHandler}
     >
-      <form style={classes.form}>
+      <form style={classes.form} onSubmit={submitHandler}>
         <Typography component="h1" variant="h1">
           Login
         </Typography>
@@ -31,6 +46,7 @@ export default function Login(props) {
               id="email"
               label="Email"
               inputProps={{ type: "email" }}
+              onChange={(e) => setEmail(e.target.value)}
             ></TextField>
           </ListItem>
           <ListItem>
@@ -40,6 +56,7 @@ export default function Login(props) {
               id="password"
               label="Password"
               inputProps={{ type: "password" }}
+              onChange={(e) => setPassword(e.target.value)}
             ></TextField>
           </ListItem>
           <ListItem>
