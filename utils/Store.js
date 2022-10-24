@@ -7,6 +7,7 @@ const initialState = {
   currentTheme: "light",
   cart: {
     cartItems: [],
+    shippingAddress: null,
   },
   userInfo: null,
 };
@@ -41,6 +42,11 @@ function reducer(state, action) {
       const cartItems = action.payload;
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    case "SAVE_SHIPPING_ADDRESS":
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload },
+      };
     case "USER_LOGIN":
       return { ...state, userInfo: action.payload };
     case "USER_LOGOUT":

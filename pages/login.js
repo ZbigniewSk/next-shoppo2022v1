@@ -31,18 +31,21 @@ export default function Login(props) {
   const router = useRouter();
   const { redirect } = router.query;
 
-  useEffect(() => {
-    if (userInfo) {
-      router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     router.push("/");
+  //   }
+  // }, []);
 
   useEffect(() => {
     const data = localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))
       : null;
     dispatch({ type: "USER_LOGIN", payload: data });
-  }, [dispatch]);
+    if (userInfo) {
+      router.push("/");
+    }
+  }, []);
 
   const submitHandler = async ({ email, password }) => {
     closeSnackbar();

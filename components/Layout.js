@@ -75,6 +75,7 @@ export default function Layout({
     dispatch({ type: "USER_LOGOUT" });
     localStorage.removeItem("userInfo");
     localStorage.removeItem("cartItems");
+    localStorage.removeItem("shippingAddress");
     router.push("/");
   };
 

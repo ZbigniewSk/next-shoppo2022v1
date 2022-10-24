@@ -100,4 +100,8 @@ export const classes = {
     color: "#ffffff",
     textTransform: "initial",
   },
+  checkoutWizzard: {
+    marginTop: "20px",
+    marginBottom: "20px",
+  },
 };
