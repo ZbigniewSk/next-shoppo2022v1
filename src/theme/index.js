@@ -18,9 +18,12 @@ export const lightTheme = createTheme({
       fontWeight: "normal",
     },
   },
+
   palette: {
     primary: { main: "#c93dd9" },
     secondary: { main: "#34ebe5" },
+    grey: { main: "#5c5b5c" },
+
     mode: "light",
   },
 });
@@ -44,6 +47,7 @@ export const darkTheme = createTheme({
   palette: {
     primary: { main: "#c93dd9" },
     secondary: { main: "#34ebe5" },
+    grey: { main: "#cccccc" },
     mode: "dark",
   },
 });

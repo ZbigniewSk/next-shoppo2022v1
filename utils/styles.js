@@ -103,5 +103,6 @@ export const classes = {
   checkoutWizzard: {
     marginTop: "20px",
     marginBottom: "20px",
+    backgroundColor: "transparent",
   },
 };

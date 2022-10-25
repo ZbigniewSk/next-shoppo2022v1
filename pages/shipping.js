@@ -2,7 +2,7 @@ import { Button, List, ListItem, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import CheckoutWizzard from "../components/checkoutWizzard";
+import CheckoutWizzard from "../components/CheckoutWizzard";
 import Layout from "../components/Layout";
 import { Store } from "../utils/Store";
 import { classes } from "../utils/styles";

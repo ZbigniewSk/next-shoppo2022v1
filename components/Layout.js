@@ -76,6 +76,7 @@ export default function Layout({
     localStorage.removeItem("userInfo");
     localStorage.removeItem("cartItems");
     localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
     router.push("/");
   };
 
