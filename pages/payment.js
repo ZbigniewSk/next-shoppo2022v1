@@ -108,7 +108,6 @@ export default function Payment(props) {
             <Button
               color="grey"
               fullWidth
-              type="submit"
               variant="outlined"
               onClick={() => router.push("/shipping")}
             >

@@ -7,7 +7,8 @@ const initialState = {
   currentTheme: "light",
   cart: {
     cartItems: [],
-    shippingAddress: null,
+    shippingAddress: {},
+    paymentMethod: "",
   },
   userInfo: null,
 };
@@ -52,7 +53,7 @@ function reducer(state, action) {
         ...state,
         cart: {
           ...state.cart,
-          paymenthMethod: action.payload,
+          paymentMethod: action.payload,
         },
       };
     case "USER_LOGIN":
