@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  CircularProgress,
   Grid,
   Link,
   List,
@@ -13,19 +14,22 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect } from "react";
+import { useSnackbar } from "notistack";
+import React, { useContext, useEffect, useState } from "react";
 import CheckoutWizzard from "../components/CheckoutWizzard";
 import Layout from "../components/Layout";
+import { getError } from "../utils/error";
 import { Store } from "../utils/Store";
 import { classes } from "../utils/styles";
 
 export default function PlaceOrder(props) {
   const { setThemeHandler, currentTheme } = props;
   const { state, dispatch } = useContext(Store);
-  const { cart } = state;
+  const { cart, userInfo } = state;
   const { cartItems, shippingAddress, paymentMethod } = cart;
   const router = useRouter();
 
@@ -33,10 +37,16 @@ export default function PlaceOrder(props) {
     const userInfoStorage = localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))
       : null;
+    if (!userInfoStorage) {
+      router.push("/login");
+    }
     dispatch({ type: "USER_LOGIN", payload: userInfoStorage });
     const shippingAddressStorage = localStorage.getItem("shippingAddress")
       ? JSON.parse(localStorage.getItem("shippingAddress"))
       : {};
+    if (!userInfoStorage) {
+      router.push("/shipping");
+    }
     dispatch({
       type: "SAVE_SHIPPING_ADDRESS",
       payload: shippingAddressStorage,
@@ -44,10 +54,17 @@ export default function PlaceOrder(props) {
     const paymentMethodStorage = localStorage.getItem("paymentMethod")
       ? JSON.parse(localStorage.getItem("paymentMethod"))
       : "";
-    if (!paymentMethod) {
+    if (!paymentMethodStorage) {
       router.push("/payment");
     }
     dispatch({ type: "SAVE_PAYMENT_METHOD", payload: paymentMethodStorage });
+    const cartItemsStorage = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    if (cartItemsStorage.length === 0) {
+      router.push("/cart");
+    }
+    dispatch({ type: "SAVE_CART_ITEMS", payload: cartItemsStorage });
   }, []);
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
@@ -57,6 +74,42 @@ export default function PlaceOrder(props) {
   const shippingPrice = itemsPrice > 200 ? 0 : 15;
   const taxPrice = round2(itemsPrice * 0.15);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
+
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+
+  const [loading, setLoading] = useState(false);
+
+  const placeOrderHandler = async () => {
+    closeSnackbar();
+
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        "/api/orders",
+        {
+          orderItems: cartItems,
+          shippingAddress,
+          paymentMethod,
+          itemsPrice,
+          shippingPrice,
+          taxPrice,
+          totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: "CART_ITEMS_CLEAR" });
+      localStorage.removeItem("cartItems");
+      setLoading(false);
+      router.push(`/order/${data._id}`);
+    } catch (err) {
+      setLoading(false);
+      enqueueSnackbar(getError(err), { variant: "error" });
+    }
+  };
 
   return (
     <Layout
@@ -214,11 +267,16 @@ export default function PlaceOrder(props) {
                   color="primary"
                   fullWidth
                   variant="outlined"
-                  //onClick={checkoutHandler}
+                  onClick={placeOrderHandler}
                 >
                   Place Order
                 </Button>
               </ListItem>
+              {loading && (
+                <ListItem>
+                  <CircularProgress />
+                </ListItem>
+              )}
             </List>
           </Card>
         </Grid>

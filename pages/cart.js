@@ -20,7 +20,7 @@ import axios from "axios";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "../components/Layout";
 import { Store } from "../utils/Store";
 
@@ -30,6 +30,14 @@ export default function CartScreen(props) {
   const { cart } = state;
   const { cartItems } = cart;
   const router = useRouter();
+
+  useEffect(() => {
+    const cartItemsStorage = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    dispatch({ type: "SAVE_CART_ITEMS", payload: cartItemsStorage });
+  }, []);
+
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock <= 0) {

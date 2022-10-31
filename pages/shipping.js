@@ -27,7 +27,7 @@ export default function Shipping(props) {
     dispatch({ type: "USER_LOGIN", payload: userInfoStorage });
     const shippingAddressStorage = localStorage.getItem("shippingAddress")
       ? JSON.parse(localStorage.getItem("shippingAddress"))
-      : null;
+      : {};
     dispatch({
       type: "SAVE_SHIPPING_ADDRESS",
       payload: shippingAddressStorage,
@@ -42,6 +42,10 @@ export default function Shipping(props) {
       setValue("postalCode", shippingAddressStorage.postalCode);
       setValue("country", shippingAddressStorage.country);
     }
+    const cartItemsStorage = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    dispatch({ type: "SAVE_CART_ITEMS", payload: cartItemsStorage });
   }, []);
 
   const submitHandler = ({ fullName, address, city, postalCode, country }) => {

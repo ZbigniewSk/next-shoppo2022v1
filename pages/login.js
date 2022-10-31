@@ -31,12 +31,6 @@ export default function Login(props) {
   const router = useRouter();
   const { redirect } = router.query;
 
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     router.push("/");
-  //   }
-  // }, []);
-
   useEffect(() => {
     const data = localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))

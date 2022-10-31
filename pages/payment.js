@@ -47,6 +47,10 @@ export default function Payment(props) {
       dispatch({ type: "SAVE_PAYMENT_METHOD", payload: paymentMethodStorage });
       setPaymentMethod(paymentMethodStorage);
     }
+    const cartItemsStorage = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    dispatch({ type: "SAVE_CART_ITEMS", payload: cartItemsStorage });
   }, []);
 
   const submitHandler = (e) => {
