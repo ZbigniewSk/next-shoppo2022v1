@@ -105,4 +105,7 @@ export const classes = {
     marginBottom: "20px",
     backgroundColor: "transparent",
   },
+  error: {
+    color: "#f04040",
+  },
 };

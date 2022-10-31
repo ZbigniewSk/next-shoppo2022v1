@@ -113,7 +113,7 @@ export default function PlaceOrder(props) {
 
   return (
     <Layout
-      title="Shopping Cart"
+      title="Place Order"
       setThemeHandler={setThemeHandler}
       currentTheme={currentTheme}
     >
@@ -193,15 +193,6 @@ export default function PlaceOrder(props) {
                           </TableCell>
                           <TableCell align="right">
                             <Typography>${item.price}</Typography>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Button
-                              variant="outlined"
-                              color="secondary"
-                              //   onClick={() => router.push("/placeorder")}
-                            >
-                              x
-                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
