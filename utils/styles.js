@@ -108,4 +108,7 @@ export const classes = {
   error: {
     color: "#f04040",
   },
+  fullWidth: {
+    width: "100%",
+  },
 };

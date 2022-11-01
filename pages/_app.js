@@ -1,3 +1,4 @@
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { getCookie } from "cookies-next";
 import { SnackbarProvider } from "notistack";
 import { useState } from "react";
@@ -11,13 +12,15 @@ function App(props) {
   return (
     <SnackbarProvider anchorOrigin={{ vertical: "top", horizontal: "center" }}>
       <StoreProvider>
-        <PageProvider currentTheme={currentTheme}>
-          <Component
-            {...pageProps}
-            setThemeHandler={setThemeHandler}
-            currentTheme={currentTheme}
-          />
-        </PageProvider>
+        <PayPalScriptProvider deferLoading={true}>
+          <PageProvider currentTheme={currentTheme}>
+            <Component
+              {...pageProps}
+              setThemeHandler={setThemeHandler}
+              currentTheme={currentTheme}
+            />
+          </PageProvider>
+        </PayPalScriptProvider>
       </StoreProvider>
     </SnackbarProvider>
   );
