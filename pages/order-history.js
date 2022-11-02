@@ -136,7 +136,9 @@ export default function OrderHistory(props) {
                             </TableCell>
                             <TableCell>
                               <NextLink href={`/order/${order._id}`} passHref>
-                                <Button variant="outlined">Details</Button>
+                                <Button color="grey" variant="outlined">
+                                  Details
+                                </Button>
                               </NextLink>
                             </TableCell>
                           </TableRow>

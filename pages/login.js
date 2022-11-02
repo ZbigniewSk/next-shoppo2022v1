@@ -13,6 +13,7 @@ import { useSnackbar } from "notistack";
 import React, { useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Layout from "../components/Layout";
+import { getError } from "../utils/error";
 import { Store } from "../utils/Store";
 import { classes } from "../utils/styles";
 
@@ -52,10 +53,7 @@ export default function Login(props) {
       localStorage.setItem("userInfo", JSON.stringify(data));
       router.push(redirect || "/");
     } catch (err) {
-      enqueueSnackbar(
-        err.response.data ? err.response.data.message : err.message,
-        { variant: "error" }
-      );
+      enqueueSnackbar(getError(err), { variant: "error" });
     }
   };
 

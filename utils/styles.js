@@ -95,6 +95,7 @@ export const classes = {
   form: {
     maxWidth: "800px",
     margin: "0 auto",
+    width: "100%",
   },
   navbarButton: {
     color: "#ffffff",
